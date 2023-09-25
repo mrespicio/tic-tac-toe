@@ -34,17 +34,29 @@ const playerFactory = (player, sign) => {
     // check if win
     // if win => game ends
     // if not => next turn
-    return {player, sign, spots}
+    const checkWin = ((spots) =>{
+        const winArr = [
+            [0, 1, 2], [0, 3, 6], 
+            [1, 4, 7], [2, 5, 8],
+            [3, 4, 5], [6, 7, 8]
+            [0, 4, 8], [2, 4, 6] ];
+            winArr.forEach(arr =>{
+                // compare arr with spots
+                if(spots == arr) {console.log('win')
+                return true}
+            })
+    })
+
+    // winning arrays
+
+    return {player, sign, spots, checkWin}
 };
 
 
 function trackPlayerSpots(player, position){
-    // check if spot on board is taken
-    // if htis player's position num has a marker in the corresponding game board array, then it is taken
-    
     // reference gameboard
     if(Gameboard.checkSpot(position)){ // true if spot is open
-        Gameboard.placeMark(player, position, player.sign);
+        Gameboard.placeMark(player, position, player.sign); // update gameboard
         player.spots.push(position); // array that holds the player's position
     }
     //player.playerBoard.splice(position, 1, sign); // keeps track of player array
@@ -60,7 +72,8 @@ function playGame(){
     // enter value that will correspond to array
     let position = prompt('where would you like to place');
     trackPlayerSpots(playerOne, position);
-    
+    playerOne.checkWin();
+
     Gameboard.placeMark(playerOne, position, playerOne.sign); // update board
     
     // let newPos = prompt('where would you like to place');
