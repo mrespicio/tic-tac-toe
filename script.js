@@ -5,19 +5,25 @@ const Gameboard = (() => {
         '', '', '',
         '','',''
     ];
+    const viewer = (() =>{
+        console.log(board);
+    })
+    const placeMark = ((player, position, sign) =>{
+        board.splice(position, 1, sign);
+    })
+
     return{ 
-        viewer: function(){
-            console.log(board);
-        }
+        viewer,
+        placeMark,
     };
 })(); 
 
 const playerFactory = (player, sign) => {
     // player and sign are passed in
-    let spots = ['', '', '', 
-        '', '', '',
-        '', '', ''];
-
+    // const playerBoard = ['', '', '', 
+    //     '', '', '',
+    //     '', '', ''];
+    const spots = [];
     // click spot
     // check if taken
     // check if win
@@ -26,21 +32,31 @@ const playerFactory = (player, sign) => {
     return {player, sign, spots}
 };
 
-function placeMark(player, position, sign){
+
+function trackPlayerSpots(player, position){
     // check if spot on board is taken
-    player.spots.splice(position, 0, sign); // keeps track of player array
+    //player.playerBoard.splice(position, 1, sign); // keeps track of player array
+    player.spots.push(position); // array that holds the player's position
+    Gameboard.board
 }
 
 function playGame(){
     const playerOne = playerFactory('one', 'x');
+    const playerTwo = playerFactory('two', 'o');
 
-    //console.log(playerOne.spots);
     // enter value that will correspond to array
     let position = prompt('where would you like to place');
-    placeMark(playerOne, position, playerOne.sign)
+    trackPlayerSpots(playerOne, position);
+    Gameboard.placeMark(playerOne, position, playerOne.sign); // update board
+    
+    // let newPos = prompt('where would you like to place');
+    // Gameboard.placeMark(playerTwo, newPos, playerTwo.sign);
 
-    console.log(playerOne.spots);
-    //Gameboard.viewer();
+    // console.log(playerOne.playerBoard);
+    // console.log(playerOne.spots)
+    console.log('this is the gameboard')
+    Gameboard.viewer();
+
 
 }
 
