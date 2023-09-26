@@ -7,19 +7,48 @@ const Gameboard = (() => {
     const viewer = (() =>{
         console.log(board);
     })
+
+    // returns new board with mark placed
     const placeMark = ((player, position, sign) =>{
         board.splice(position, 1, sign);
     })
-    const checkSpot = ((position) =>{
+
+    // check if position in board is open
+    const checkAvail = ((position) =>{
         if(board[position] =='') return true // spot is open
         else return false // spot is taken
     });
+
+    // if a player's spots array match any of these then that player wins
+    const winArr = [
+        [0, 1, 2], [0, 3, 6], 
+        [1, 4, 7], [2, 5, 8],
+        [3, 4, 5], [6, 7, 8],
+        [0, 4, 8], [2, 4, 6] ];
+
+
+    // compare player spots to winning spots
+    // currently: only checking if array matches exactly
+    // todo: need to just make sure the winning array combo is
+    // within the player's array
+    const checkWin = ((spots) =>{
+        console.log('the player is at ' + spots);
+        return true;
+        // winArr.forEach(arr =>{
+        //     if(spots === arr) {
+        //         console.log('win')
+        //         return true
+        //     }
+        //     else return false
+        // })
+    })
 
     return{ 
         board,
         viewer,
         placeMark,
-        checkSpot
+        checkAvail,
+        checkWin
     };
 })(); 
 
@@ -28,41 +57,26 @@ const playerFactory = (player, sign) => {
     // const playerBoard = ['', '', '', 
     //     '', '', '',
     //     '', '', ''];
+
+    // spots contain the positions that the player holds on the gameboard
     const spots = [];
-    // click spot
-    // check if taken
+
     // check if win
     // if win => game ends
     // if not => next turn
-    const checkWin = ((spots) =>{
-        const winArr = [
-            [0, 1, 2], [0, 3, 6], 
-            [1, 4, 7], [2, 5, 8],
-            [3, 4, 5], [6, 7, 8]
-            [0, 4, 8], [2, 4, 6] ];
-            winArr.forEach(arr =>{
-                // compare arr with spots
-                if(spots == arr) {console.log('win')
-                return true}
-            })
-    })
 
     // winning arrays
-
-    return {player, sign, spots, checkWin}
+    return {player, sign, spots}
 };
 
 
-function trackPlayerSpots(player, position){
-    // reference gameboard
-    if(Gameboard.checkSpot(position)){ // true if spot is open
+
+function updateGameboard(player, position){
+    if(Gameboard.checkAvail(position)){ // true if spot is open
         Gameboard.placeMark(player, position, player.sign); // update gameboard
         player.spots.push(position); // array that holds the player's position
     }
-    //player.playerBoard.splice(position, 1, sign); // keeps track of player array
-
     Gameboard.viewer();
-
 }
 
 function playGame(){
@@ -71,10 +85,18 @@ function playGame(){
 
     // enter value that will correspond to array
     let position = prompt('where would you like to place');
-    trackPlayerSpots(playerOne, position);
-    playerOne.checkWin();
 
-    Gameboard.placeMark(playerOne, position, playerOne.sign); // update board
+    // gameboard is updated with player's mark
+    updateGameboard(playerOne, position);
+
+    // check if win condition is met
+    //console.log(playerOne.spots);
+    
+    const winStatus = Gameboard.checkWin(playerOne.spots);
+
+    
+    //if(playerOne.checkWin(playerOne.spots)) console.log('player wins')
+
     
     // let newPos = prompt('where would you like to place');
     // Gameboard.placeMark(playerTwo, newPos, playerTwo.sign);
@@ -86,7 +108,3 @@ function playGame(){
 }
 
 playGame();
-
-
-// const test = [1, 2, ,'', 3]
-// if(typeof test[2] === 'undefined') console.log('spot open')
