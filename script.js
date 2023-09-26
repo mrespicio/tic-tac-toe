@@ -20,12 +20,15 @@ const Gameboard = (() => {
     });
 
     // if a player's spots array match any of these then that player wins
-    const winArr = [
+    const winConditions = [
         [0, 1, 2], [0, 3, 6], 
         [1, 4, 7], [2, 5, 8],
         [3, 4, 5], [6, 7, 8],
         [0, 4, 8], [2, 4, 6] ];
 
+    const inSpots = (num) =>{
+
+    }
 
     // compare player spots to winning spots
     // currently: only checking if array matches exactly
@@ -33,15 +36,24 @@ const Gameboard = (() => {
     // within the player's array
     const checkWin = ((spots) =>{
         console.log('the player is at ' + spots);
-        return true;
-        // winArr.forEach(arr =>{
-        //     if(spots === arr) {
-        //         console.log('win')
-        //         return true
-        //     }
-        //     else return false
-        // })
-    })
+        // spots is player arr
+        // arr is winning array
+
+        // compare spots and arr    
+        // check arr elements exists in spots 
+
+        let winCount = '';
+        winConditions.forEach(winArr =>{ // iterate through win conditions arr
+            console.log('the current win condition is ' + winArr);
+            winArr.forEach(num => { // iterate each winnArr array values
+                // if(winArr.every(spots.includes(num))) // winArr value exists in spots array
+                //     winCount++;
+                // if(winCount == 3) return true;
+                console.log('the player positions are ' + spots);
+            })
+
+        }) //winConditions
+    }) //checkWin
 
     return{ 
         board,
@@ -70,7 +82,6 @@ const playerFactory = (player, sign) => {
 };
 
 
-
 function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
         Gameboard.placeMark(player, position, player.sign); // update gameboard
@@ -83,17 +94,18 @@ function playGame(){
     const playerOne = playerFactory('one', 'x');
     const playerTwo = playerFactory('two', 'o');
 
-    // enter value that will correspond to array
-    let position = prompt('where would you like to place');
-
-    // gameboard is updated with player's mark
-    updateGameboard(playerOne, position);
-
     // check if win condition is met
-    //console.log(playerOne.spots);
     
-    const winStatus = Gameboard.checkWin(playerOne.spots);
+    //const winStatus = Gameboard.checkWin(playerOne.spots);
+    // while(!winStatus){
+    for(let i = 0; i <= 4; i++){ // for testing 
+        // enter value that will correspond to array
+        let position = prompt('where would you like to place');
 
+        // gameboard is updated with player's mark
+        updateGameboard(playerOne, position);
+        Gameboard.checkWin(playerOne.spots);
+    }
     
     //if(playerOne.checkWin(playerOne.spots)) console.log('player wins')
 
