@@ -38,22 +38,32 @@ const Gameboard = (() => {
     // spots is player arr
     // arr is winning array
 
-    const checkWin = ((spots) =>{
+    const checkWin = ((playerSpots) =>{
         winConditions.forEach(winArr =>{ // iterate through all win conditions
             console.log('the current win condition is ' + winArr); 
-            console.log('the player is at ' + spots);
+            //console.log('the player is at ' + playerSpots);
 
             // spots is currently a reference
-            console.log('the spots passed into checkin function is ' + spots)
+            //console.log('the spots passed into checkin function is ' + playerSpots)
             // need to get array
 
+            // winArr is each win condition arry like [0, 1, 2], [0, 3, 6]...
             // tests if all elements in spots arr meet conditions
-            if(winArr.every(n => {
-                spots.includes(n)})) // condition being values in winarr exists in spots // n is the num value in win Arr
-            { 
+            //if(winArr.every(n => {
+                // winArr.forEach(winVal => {
+                // if(winArr.every(() => playerSpots.find(playerVal => winVal == playerVal)))// condition being values in winarr exists in spots // n is the num value in win Arr
+                // {
+                //     console.log('found all of win arr inside of player spots')
+                //  if(winArr.every(n => n < 5))
+            if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined)))
+            {
                 console.log('found all of win arr inside of player spots')
             }
 
+            //if(playerSpots.includes(0))         
+            // // if(playerSpots.find(n => n >= 1) > 0)
+
+            //playerSpots.forEach(x => console.log(x))
             // winArr.forEach(num => { // iterate each winnArr array values // num is each individual number
             //     // if(winArr.every(spots.includes(num))) // winArr value exists in spots array
             //     //     winCount++;
@@ -108,7 +118,7 @@ function playGame(){
 
         // gameboard is updated with player's mark
         updateGameboard(playerOne, position);
-        //console.log('the playerone array that is being passed is ' + playerOne.spots);
+        console.log('the playerone array that is being passed is ' + playerOne.spots);
         Gameboard.checkWin(playerOne.spots); 
         // need to pass the actual array
         // playerOne.spots is currently a reference
