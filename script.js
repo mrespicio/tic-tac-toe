@@ -51,11 +51,8 @@ const Gameboard = (() => {
             //     return true;
             // }
 
-            //console.log('the nested win status is ' + 
-            //winArr.every(n => (playerSpots.find(x => x == n) !== undefined))) 
-            //winArr.every(n => (playerSpots.includes(n))) )
+            //winArr.every(n => (playerSpots.includes(n))) 
             return winArr.every(n => (playerSpots.find(x => x == n) !== undefined));
-
         }) //winConditions
     }) //checkWin
 
@@ -92,16 +89,21 @@ function playGame(){
     
     let winStatus = false;
     while(!winStatus){
-        //for(let i = 0; i <= 3; i++){ //for testing
+        //for(let i = 0; i <= 2; i++){ //for testing
         // enter value that will correspond to array
-        let position = prompt('where would you like to place');
+        let position = prompt('where would p1 like to place');
 
         // gameboard is updated with player's mark
+
         updateGameboard(playerOne, position);
         winStatus = Gameboard.checkWin(playerOne.spots);
-        //console.log('the outside win status is ' + Gameboard.checkWin(playerOne.spots))
-        // let innerWinStatus = Gameboard.checkWin(playerOne.spots);
-        // if(innerWinStatus == true) break;
+        if(winStatus) break;
+
+        let newPos = prompt('where would p2 like to place');
+        updateGameboard(playerTwo, newPos);
+        winStatus = Gameboard.checkWin(playerTwo.spots);
+        if(winStatus) break;
+
     }
     
     //if(playerOne.checkWin(playerOne.spots)) console.log('player wins')
