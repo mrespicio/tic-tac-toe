@@ -39,42 +39,18 @@ const Gameboard = (() => {
     // arr is winning array
 
     const checkWin = ((playerSpots) =>{
-        winConditions.forEach(winArr =>{ // iterate through all win conditions
+        winConditions.some(winArr =>{ // iterate through all win conditions
             console.log('the current win condition is ' + winArr); 
-            //console.log('the player is at ' + playerSpots);
-
-            // spots is currently a reference
-            //console.log('the spots passed into checkin function is ' + playerSpots)
-            // need to get array
+            console.log('the player is at ' + playerSpots);
 
             // winArr is each win condition arry like [0, 1, 2], [0, 3, 6]...
-            // tests if all elements in spots arr meet conditions
-            //if(winArr.every(n => {
-                // winArr.forEach(winVal => {
-                // if(winArr.every(() => playerSpots.find(playerVal => winVal == playerVal)))// condition being values in winarr exists in spots // n is the num value in win Arr
-                // {
-                //     console.log('found all of win arr inside of player spots')
-                //  if(winArr.every(n => n < 5))
-            if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined)))
-            {
+            // tests if all elements in playerspots arr meet conditions
+
+            // player spots has values inside a winning array
+            if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined))){ 
                 console.log('found all of win arr inside of player spots')
+                return true;
             }
-
-            //if(playerSpots.includes(0))         
-            // // if(playerSpots.find(n => n >= 1) > 0)
-
-            //playerSpots.forEach(x => console.log(x))
-            // winArr.forEach(num => { // iterate each winnArr array values // num is each individual number
-            //     // if(winArr.every(spots.includes(num))) // winArr value exists in spots array
-            //     //     winCount++;
-            //     // if(winCount == 3) return true;
-            //     console.log('the player positions are ' + spots);
-            //     console.log('the value to compare is ' + num);
-
-            //     if(winArr.every(n => { spots.includes(n)})) 
-            //         console.log('found all of win arr inside of player')
-                
-            // })
 
         }) //winConditions
     }) //checkWin
@@ -110,18 +86,17 @@ function playGame(){
 
     // check if win condition is met
     
-    //const winStatus = Gameboard.checkWin(playerOne.spots);
-    // while(!winStatus){
-    for(let i = 0; i <= 4; i++){ // for testing 
+    let winStatus = false;
+    //while(!winStatus){
+        for(let i = 0; i <= 3; i++){ //for testing
         // enter value that will correspond to array
         let position = prompt('where would you like to place');
 
         // gameboard is updated with player's mark
         updateGameboard(playerOne, position);
-        console.log('the playerone array that is being passed is ' + playerOne.spots);
-        Gameboard.checkWin(playerOne.spots); 
-        // need to pass the actual array
-        // playerOne.spots is currently a reference
+        console.log(Gameboard.checkWin(playerOne.spots));
+        winStatus = Gameboard.checkWin(playerOne.spots);
+        if(winStatus == true) break;
     }
     
     //if(playerOne.checkWin(playerOne.spots)) console.log('player wins')
