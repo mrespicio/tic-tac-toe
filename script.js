@@ -1,4 +1,5 @@
 const Gameboard = (() => {
+    const boardMax = 9;
     const board = [
         '', '', '',
         '', '', '',
@@ -26,8 +27,8 @@ const Gameboard = (() => {
         [3, 4, 5], [6, 7, 8],
         [0, 4, 8], [2, 4, 6] ];
 
-    const checker = (arr, target) =>{
-        target.every(num => arr.includes(num))
+    const isFull = (board) => {
+        return board.every(n => n != '')
     }
 
     // compare player spots to winning spots
@@ -58,9 +59,11 @@ const Gameboard = (() => {
 
     return{ 
         board,
+        boardMax,
         viewer,
         placeMark,
         checkAvail,
+        isFull,
         checkWin
     };
 })(); 
@@ -97,12 +100,20 @@ function playGame(){
 
         updateGameboard(playerOne, position);
         winStatus = Gameboard.checkWin(playerOne.spots);
-        if(winStatus) break;
+        if(winStatus) {
+            console.log('p1 wins!')
+            break;
+        }
 
         let newPos = prompt('where would p2 like to place');
         updateGameboard(playerTwo, newPos);
         winStatus = Gameboard.checkWin(playerTwo.spots);
-        if(winStatus) break;
+        if(winStatus) {
+            console.log('p2 wins!')
+            break;
+        }
+
+        if(Gameboard.isFull(Gameboard.board)) break;
 
     }
     
