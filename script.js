@@ -31,13 +31,7 @@ const Gameboard = (() => {
         return board.every(n => n != '')
     }
 
-    // compare player spots to winning spots
-    // currently: only checking if array matches exactly
-    // todo: need to just make sure the winning array combo is
-    // within the player's array
-
-    // spots is player arr
-    // arr is winning array
+    // make sure the winning array combo is within the player's array
 
     const checkWin = ((playerSpots) =>{
         return winConditions.some(winArr =>{ // iterate through all win conditions
@@ -71,10 +65,8 @@ const Gameboard = (() => {
 const playerFactory = (player, sign) => {
     // spots contain the positions that the player holds on the gameboard
     const spots = [];
-
     return {player, sign, spots}
 };
-
 
 function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
@@ -89,15 +81,13 @@ function playGame(){
     const playerTwo = playerFactory('two', 'o');
 
     // check if win condition is met
-    
     let winStatus = false;
     while(!winStatus){
         //for(let i = 0; i <= 2; i++){ //for testing
+
         // enter value that will correspond to array
         let position = prompt('where would p1 like to place');
-
         // gameboard is updated with player's mark
-
         updateGameboard(playerOne, position);
         winStatus = Gameboard.checkWin(playerOne.spots);
         if(winStatus) {
@@ -113,20 +103,13 @@ function playGame(){
             break;
         }
 
-        if(Gameboard.isFull(Gameboard.board)) break;
+        if(Gameboard.isFull(Gameboard.board)){
+            console.log('no winner!')
+            break
+        } ;
 
     }
-    
-    //if(playerOne.checkWin(playerOne.spots)) console.log('player wins')
-
-    
-    // let newPos = prompt('where would you like to place');
-    // Gameboard.placeMark(playerTwo, newPos, playerTwo.sign);
-
-    // console.log(playerOne.playerBoard);
-    // console.log(playerOne.spots)
-    //console.log('this is the gameboard')
-    //Gameboard.viewer();
 }
 
-playGame();
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', playGame);
