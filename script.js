@@ -39,7 +39,7 @@ const Gameboard = (() => {
     // arr is winning array
 
     const checkWin = ((playerSpots) =>{
-        winConditions.some(winArr =>{ // iterate through all win conditions
+        return winConditions.some(winArr =>{ // iterate through all win conditions
             console.log('the current win condition is ' + winArr); 
             console.log('the player is at ' + playerSpots);
 
@@ -47,10 +47,14 @@ const Gameboard = (() => {
             // tests if all elements in playerspots arr meet conditions
 
             // player spots has values inside a winning array
-            if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined))){ 
-                console.log('found all of win arr inside of player spots')
-                return true;
-            }
+            // if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined))){ 
+            //     return true;
+            // }
+
+            //console.log('the nested win status is ' + 
+            //winArr.every(n => (playerSpots.find(x => x == n) !== undefined))) 
+            //winArr.every(n => (playerSpots.includes(n))) )
+            return winArr.every(n => (playerSpots.find(x => x == n) !== undefined));
 
         }) //winConditions
     }) //checkWin
@@ -87,16 +91,17 @@ function playGame(){
     // check if win condition is met
     
     let winStatus = false;
-    //while(!winStatus){
-        for(let i = 0; i <= 3; i++){ //for testing
+    while(!winStatus){
+        //for(let i = 0; i <= 3; i++){ //for testing
         // enter value that will correspond to array
         let position = prompt('where would you like to place');
 
         // gameboard is updated with player's mark
         updateGameboard(playerOne, position);
-        console.log(Gameboard.checkWin(playerOne.spots));
         winStatus = Gameboard.checkWin(playerOne.spots);
-        if(winStatus == true) break;
+        //console.log('the outside win status is ' + Gameboard.checkWin(playerOne.spots))
+        // let innerWinStatus = Gameboard.checkWin(playerOne.spots);
+        // if(innerWinStatus == true) break;
     }
     
     //if(playerOne.checkWin(playerOne.spots)) console.log('player wins')
