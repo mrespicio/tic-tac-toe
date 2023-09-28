@@ -34,8 +34,8 @@ const Gameboard = (() => {
     // make sure the winning array combo is within the player's array
     const checkWin = ((playerSpots) =>{
         return winConditions.some(winArr =>{ // iterate through all win conditions
-            console.log('the current win condition is ' + winArr); 
-            console.log('the player is at ' + playerSpots);
+            // console.log('the current win condition is ' + winArr); 
+            // console.log('the player is at ' + playerSpots);
 
             // winArr is each win condition arry like [0, 1, 2], [0, 3, 6]...
             // tests if all elements in playerspots arr meet conditions
@@ -64,20 +64,29 @@ const Gameboard = (() => {
 const playerFactory = (player, sign) => {
     // spots contain the positions that the player holds on the gameboard
     const spots = [];
-    return {player, sign, spots}
+    const name = player;
+    return {name, sign, spots}
 };
 
 function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
         Gameboard.placeMark(player, position, player.sign); // update gameboard
         player.spots.push(position); // array that holds the player's position
+        Gameboard.viewer()
+        return true;
     }
-    Gameboard.viewer();
+    else{
+        Gameboard.viewer();
+        return false;
+    } 
+    
 }
 
-function playGame(pos){
-    const playerOne = playerFactory('one', 'x');
-    const playerTwo = playerFactory('two', 'o');
+// checks spot
+// updates gameboard
+// check for winners
+const gameController = (player, pos) =>{
+
 
     // check if win condition is met
     let winStatus = false;
@@ -85,48 +94,60 @@ function playGame(pos){
         for(let i = 0; i <= 2; i++){ //for testing
 
         // enter value that will correspond to array
-        //let position = prompt('where would p1 like to place');
+        //let pos = prompt('where would p1 like to place');
         // gameboard is updated with player's mark
-        updateGameboard(playerOne, pos);
-        winStatus = Gameboard.checkWin(playerOne.spots);
-        if(winStatus) {
-            console.log('p1 wins!')
-            break;
-        }
+        updateGameboard(player, pos)
+            winStatus = Gameboard.checkWin(player.spots);
+            if(winStatus) {
+                console.log(`${player.name} wins!`)
+                break;
+            } 
 
-        //let newPos = prompt('where would p2 like to place');
-        updateGameboard(playerTwo, pos);
-        winStatus = Gameboard.checkWin(playerTwo.spots);
-        if(winStatus) {
-            console.log('p2 wins!')
-            break;
-        }
+        // let newPos = prompt('where would p2 like to place');
+        // updateGameboard(playerTwo, newPos)
+        // winStatus = Gameboard.checkWin(playerTwo.spots);
+        // if(winStatus) {
+        //     console.log('p2 wins!')
+        //     break;
+        // } 
 
-        if(Gameboard.isFull(Gameboard.board)){
+        if(Gameboard.isFull(Gameboard.board)){   
             console.log('no winner!')
             break
         };
     }
 }
 
-// function playRound(pos){
 
-// }
+function playGame(pos){
+
+}
+
 
 const gameContainer = document.getElementById('game-container');
 
 function createGrid(){
+    const playerOne = playerFactory('player one', 'x', false);
+    const playerTwo = playerFactory('player two', 'o', false);
+    let currentPlayer = playerOne;
+
     // create rows
     for(i = 0; i < 9; i++ ){
         let square = document.createElement('div');
         square.setAttribute('id', `sq-${i}`)
         square.setAttribute('class', 'sq-item');
-        //console.log(square.id.charAt(3));
-        const position = square.id.charAt(3);
+        const position = Number(square.id.charAt(3));
         // square functionality
         square.addEventListener('click', () =>{
             //console.log(`youve clicked on #${square.id.charAt(3)}`)
-            playGame(position);
+            if(currentPlayer == playerOne){
+                gameController(currentPlayer, position);
+                currentPlayer = playerTwo;
+            }
+            else if(currentPlayer == playerTwo){
+                gameController(currentPlayer, position);
+                currentPlayer = playerOne;
+            }
         });
 
         gameContainer.append(square);
