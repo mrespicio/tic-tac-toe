@@ -1,0 +1,9 @@
+#game-container{
+    max-width: 320px;
+}
+.sq-item{
+    border: solid 2px black;
+    height: 100px;
+    width: 100px;
+    display: inline-block;
+}

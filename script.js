@@ -32,7 +32,6 @@ const Gameboard = (() => {
     }
 
     // make sure the winning array combo is within the player's array
-
     const checkWin = ((playerSpots) =>{
         return winConditions.some(winArr =>{ // iterate through all win conditions
             console.log('the current win condition is ' + winArr); 
@@ -76,27 +75,27 @@ function updateGameboard(player, position){
     Gameboard.viewer();
 }
 
-function playGame(){
+function playGame(pos){
     const playerOne = playerFactory('one', 'x');
     const playerTwo = playerFactory('two', 'o');
 
     // check if win condition is met
     let winStatus = false;
-    while(!winStatus){
-        //for(let i = 0; i <= 2; i++){ //for testing
+    //while(!winStatus){
+        for(let i = 0; i <= 2; i++){ //for testing
 
         // enter value that will correspond to array
-        let position = prompt('where would p1 like to place');
+        //let position = prompt('where would p1 like to place');
         // gameboard is updated with player's mark
-        updateGameboard(playerOne, position);
+        updateGameboard(playerOne, pos);
         winStatus = Gameboard.checkWin(playerOne.spots);
         if(winStatus) {
             console.log('p1 wins!')
             break;
         }
 
-        let newPos = prompt('where would p2 like to place');
-        updateGameboard(playerTwo, newPos);
+        //let newPos = prompt('where would p2 like to place');
+        updateGameboard(playerTwo, pos);
         winStatus = Gameboard.checkWin(playerTwo.spots);
         if(winStatus) {
             console.log('p2 wins!')
@@ -106,10 +105,37 @@ function playGame(){
         if(Gameboard.isFull(Gameboard.board)){
             console.log('no winner!')
             break
-        } ;
-
+        };
     }
 }
 
+// function playRound(pos){
+
+// }
+
+const gameContainer = document.getElementById('game-container');
+
+function createGrid(){
+    // create rows
+    for(i = 0; i < 9; i++ ){
+        let square = document.createElement('div');
+        square.setAttribute('id', `sq-${i}`)
+        square.setAttribute('class', 'sq-item');
+        //console.log(square.id.charAt(3));
+        const position = square.id.charAt(3);
+        // square functionality
+        square.addEventListener('click', () =>{
+            //console.log(`youve clicked on #${square.id.charAt(3)}`)
+            playGame(position);
+        });
+
+        gameContainer.append(square);
+    }
+}
+const sq1 = document.getElementById('sq-0');
+
 const startBtn = document.getElementById('start-btn');
-startBtn.addEventListener('click', playGame);
+startBtn.addEventListener('click', () => {
+    createGrid();
+    //playGame();
+});
