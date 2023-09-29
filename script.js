@@ -72,6 +72,10 @@ function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
         Gameboard.placeMark(player, position, player.sign); // update gameboard
         player.spots.push(position); // array that holds the player's position
+        // display on board
+        const sq = document.getElementById(`sq-${position}`)
+        sq.setAttribute('class', 'sq-item');
+        sq.append(`${player.sign}`)
         Gameboard.viewer()
         return true;
     }
@@ -87,7 +91,6 @@ function updateGameboard(player, position){
 // check for winners
 const gameController = (player, pos) =>{
 
-
     // check if win condition is met
     let winStatus = false;
     //while(!winStatus){
@@ -97,11 +100,11 @@ const gameController = (player, pos) =>{
         //let pos = prompt('where would p1 like to place');
         // gameboard is updated with player's mark
         updateGameboard(player, pos)
-            winStatus = Gameboard.checkWin(player.spots);
-            if(winStatus) {
-                console.log(`${player.name} wins!`)
-                break;
-            } 
+        winStatus = Gameboard.checkWin(player.spots);
+        if(winStatus) {
+            console.log(`${player.name} wins!`)
+            break;
+        } 
 
         // let newPos = prompt('where would p2 like to place');
         // updateGameboard(playerTwo, newPos)
@@ -137,6 +140,7 @@ function createGrid(){
         square.setAttribute('id', `sq-${i}`)
         square.setAttribute('class', 'sq-item');
         const position = Number(square.id.charAt(3));
+        
         // square functionality
         square.addEventListener('click', () =>{
             //console.log(`youve clicked on #${square.id.charAt(3)}`)
