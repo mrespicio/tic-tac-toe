@@ -89,12 +89,12 @@ function updateGameboard(player, position){
 // checks spot
 // updates gameboard
 // check for winners
-const gameController = (player, pos) =>{
+function gameController(player, pos){
 
     // check if win condition is met
     let winStatus = false;
-    //while(!winStatus){
-        for(let i = 0; i <= 2; i++){ //for testing
+    // while(!winStatus){
+        //for(let i = 0; i <= 9; i++){ //for testing
 
         // enter value that will correspond to array
         //let pos = prompt('where would p1 like to place');
@@ -102,30 +102,27 @@ const gameController = (player, pos) =>{
         updateGameboard(player, pos)
         winStatus = Gameboard.checkWin(player.spots);
         if(winStatus) {
-            console.log(`${player.name} wins!`)
-            break;
+            endGame(player);
+            //break;
         } 
-
-        // let newPos = prompt('where would p2 like to place');
-        // updateGameboard(playerTwo, newPos)
-        // winStatus = Gameboard.checkWin(playerTwo.spots);
-        // if(winStatus) {
-        //     console.log('p2 wins!')
-        //     break;
-        // } 
 
         if(Gameboard.isFull(Gameboard.board)){   
             console.log('no winner!')
-            break
-        };
-    }
+            //break;
+        }
+    //}
 }
 
 
-function playGame(pos){
+// when game ends...
+// display winner
+// button to clear and restart
+function endGame(player){
+    console.log(player.name + ' wins')
+    let gameover = document.getElementById('gameover');
+    gameover.style.display = 'block'
 
 }
-
 
 const gameContainer = document.getElementById('game-container');
 
@@ -146,18 +143,17 @@ function createGrid(){
             //console.log(`youve clicked on #${square.id.charAt(3)}`)
             if(currentPlayer == playerOne){
                 gameController(currentPlayer, position);
-                currentPlayer = playerTwo;
+                currentPlayer = playerTwo; // update to next player
             }
             else if(currentPlayer == playerTwo){
                 gameController(currentPlayer, position);
-                currentPlayer = playerOne;
+                currentPlayer = playerOne; // update to next player
             }
         });
-
         gameContainer.append(square);
     }
 }
-const sq1 = document.getElementById('sq-0');
+//const sq1 = document.getElementById('sq-0');
 
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
