@@ -91,20 +91,36 @@ function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
         Gameboard.placeMark(player, position, player.sign); // update gameboard
         player.spots.push(position); // array that holds the player's position
-
-        // display on board
-        const sq = document.getElementById(`sq-${position}`)
-        sq.setAttribute('class', 'sq-item');
-        sq.append(`${player.sign}`)
-        //Gameboard.viewer()
+        ModifyDom.displayMark(player, position);
         return true;
     }
     else{ // spot is taken
-        //Gameboard.viewer();
         return false;
     } 
     
 }
+
+const ModifyDom = (() => {
+    const displayMark = (player, position) =>{
+        const sq = document.getElementById(`sq-${position}`)
+        sq.setAttribute('class', 'sq-item');
+        sq.append(`${player.sign}`) 
+    }
+
+    const gameOver = (winner, loser) =>{
+        let gameover = document.getElementById('gameover');
+        gameover.style.display = 'block';
+    }
+
+    const clearDisplay = () =>{
+        const squares = document.getElementsByClassName('sq-item');
+        for(let i = 0; i < squares.length; i++){
+            squares[i].innerHTML = '';
+        }
+    }
+
+    return{displayMark, gameOver, clearDisplay}
+})();
 
 // checks spot
 // updates gameboard
@@ -131,18 +147,16 @@ function gameController(player, pos){
     //}
 }
 
-
-// when game ends...
-// display winner
-// button to clear and restart
 function endGame(player){
     // reference player objects
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
 
     console.log(player.name + ' wins')
-    let gameover = document.getElementById('gameover');
-    gameover.style.display = 'block';
+    // let gameover = document.getElementById('gameover');
+    // gameover.style.display = 'block';
+    
+    ModifyDom.gameOver();
 
     let winner = document.getElementById('winner');
     winner.innerHTML = `${player.name} wins!`
@@ -174,18 +188,13 @@ function endGame(player){
         // console.log(loser.spots);
 
         // clear gameboard dom
-        clearGBDom();
+        ModifyDom.clearDisplay();
     },{once:true});
 
 
 }
 
-function clearGBDom(){
-    const squares = document.getElementsByClassName('sq-item');
-    for(let i = 0; i < squares.length; i++){
-        squares[i].innerHTML = '';
-    }
-}
+
 
 function createGrid(){
     const gameContainer = document.getElementById('game-container');
