@@ -21,5 +21,7 @@
 }
 
 #gameover{
-    /* display: none; */
+    display: none;
+    border: solid 1px black;
+    max-width: 320px;
 }

@@ -50,6 +50,12 @@ const Gameboard = (() => {
         }) //winConditions
     }) //checkWin
 
+    const clearBoard = (() =>{
+        for(let i = 0; i < boardMax; i++){
+            board[i] = ''
+        }
+    });
+
     return{ 
         board,
         boardMax,
@@ -57,16 +63,28 @@ const Gameboard = (() => {
         placeMark,
         checkAvail,
         isFull,
-        checkWin
+        checkWin,
+        clearBoard
     };
 })(); 
 
-const playerFactory = (player, sign) => {
+function playerFactory(player, sign){
     // spots contain the positions that the player holds on the gameboard
     const spots = [];
+    const clearPlayerBoard = (() =>{
+        for(let i = 0; i < 9; i++){
+            spots[i] = ''
+        }
+    });
     const name = player;
-    return {name, sign, spots}
+    return {name, clearPlayerBoard, sign, spots}
 };
+
+const playerHolder = (() => {
+    const playerOne = playerFactory('player one', 'x', false);
+    const playerTwo = playerFactory('player two', 'o', false);
+    return{playerOne, playerTwo}
+})();
 
 function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
@@ -118,17 +136,42 @@ function gameController(player, pos){
 // display winner
 // button to clear and restart
 function endGame(player){
+    const playerOne = playerHolder.playerOne;
+    const playerTwo = playerHolder.playerTwo;
+
     console.log(player.name + ' wins')
     let gameover = document.getElementById('gameover');
-    gameover.style.display = 'block'
+    gameover.style.display = 'block';
+
+    let winner = document.getElementById('winner');
+    winner.innerHTML = `${player.name} wins!`
+
+    let loser;
+    if(player.name == 'playerOne') loser = playerTwo;
+    else if(player.name == 'playerTwo') loser = playerOne;
+
+    // clear 
+    let playAgain = document.getElementById('play-again');
+    playAgain.addEventListener('click', () =>{
+        Gameboard.clearBoard(); // clear gameboard array
+        player.clearPlayerBoard(); // clear winner array
+        loser.clearPlayerBoard();
+        console.log(Gameboard.board);
+        console.log(player.spots);
+    })
 
 }
 
-const gameContainer = document.getElementById('game-container');
+
+
+
 
 function createGrid(){
-    const playerOne = playerFactory('player one', 'x', false);
-    const playerTwo = playerFactory('player two', 'o', false);
+    const gameContainer = document.getElementById('game-container');
+    const playerOne = playerHolder.playerOne;
+    const playerTwo = playerHolder.playerTwo;
+    // const playerOne = playerFactory('player one', 'x', false);
+    // const playerTwo = playerFactory('player two', 'o', false);
     let currentPlayer = playerOne;
 
     // create rows
