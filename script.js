@@ -72,9 +72,7 @@ function playerFactory(player, sign){
     // spots contain the positions that the player holds on the gameboard
     const spots = [];
     const clearPlayerBoard = (() =>{
-        for(let i = 0; i < spots.length; i++){
-            spots[i] = ''
-        }
+        spots.length = 0;
     });
     const name = player;
     const viewer = () =>{console.log(spots)}
@@ -85,6 +83,44 @@ const playerHolder = (() => {
     const playerOne = playerFactory('player one', 'x', false);
     const playerTwo = playerFactory('player two', 'o', false);
     return{playerOne, playerTwo}
+})();
+
+
+const ModifyDom = (() => {
+    const displayMark = (player, position) =>{
+        const sq = document.getElementById(`sq-${position}`)
+        sq.setAttribute('class', 'sq-item');
+        sq.append(`${player.sign}`) 
+    }
+
+    const gameOver = (winner, loser) =>{
+        let gameover = document.getElementById('gameover');
+        gameover.style.display = 'block';
+
+        let winnerText = document.getElementById('winner');
+        winnerText.innerHTML = `${winner.name} wins!`
+
+        // let loserText = document.getElementById('loser');
+        // loserText.innerHTML = `${loser.name} loses!`
+    }
+
+    const restartGame = () =>{
+        let gameover = document.getElementById('gameover');
+        gameover.style.display = 'none';
+    }
+
+    // clear display + remove event
+    const clearDisplay = () =>{
+        const squares = document.getElementsByClassName('sq-item');
+        for(let i = 0; i < squares.length; i++){
+            squares[i].innerHTML = '';
+        }
+    }
+
+    const makeSquares = () =>{
+
+    }
+    return{displayMark, gameOver, restartGame, clearDisplay}
 })();
 
 function updateGameboard(player, position){
@@ -100,33 +136,7 @@ function updateGameboard(player, position){
     
 }
 
-const ModifyDom = (() => {
-    const displayMark = (player, position) =>{
-        const sq = document.getElementById(`sq-${position}`)
-        sq.setAttribute('class', 'sq-item');
-        sq.append(`${player.sign}`) 
-    }
-
-    const gameOver = (winner, loser) =>{
-        let gameover = document.getElementById('gameover');
-        gameover.style.display = 'block';
-    }
-
-    const clearDisplay = () =>{
-        const squares = document.getElementsByClassName('sq-item');
-        for(let i = 0; i < squares.length; i++){
-            squares[i].innerHTML = '';
-        }
-    }
-
-    return{displayMark, gameOver, clearDisplay}
-})();
-
-// checks spot
-// updates gameboard
-// check for winners
 function gameController(player, pos){
-
     // check if win condition is met
     let winStatus = false;
     // while(!winStatus){
@@ -151,16 +161,7 @@ function endGame(player){
     // reference player objects
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
-
-    console.log(player.name + ' wins')
-    // let gameover = document.getElementById('gameover');
-    // gameover.style.display = 'block';
     
-    ModifyDom.gameOver();
-
-    let winner = document.getElementById('winner');
-    winner.innerHTML = `${player.name} wins!`
-
     let loser;
     switch(player){
         case playerOne:
@@ -170,7 +171,13 @@ function endGame(player){
             loser = playerOne;
             break;
     }
-    console.log('the loser is ' + loser.name)
+
+    ModifyDom.gameOver(player, loser);
+
+    console.log('player one was at ' + playerOne.spots);
+    console.log('player two was at ' + playerTwo.spots);
+
+    // remove event from squares
 
     // clear 
     let playAgain = document.getElementById('play-again');
@@ -180,21 +187,18 @@ function endGame(player){
         player.clearPlayerBoard(); 
         loser.clearPlayerBoard();
 
-        Gameboard.viewer();
-        console.log('player one spots are ' + playerOne.spots);
-        console.log('player two spots are ' + playerTwo.spots)
-        // console.log(Gameboard.board);
-        // console.log(player.spots);
-        // console.log(loser.spots);
+        //Gameboard.viewer();
+        console.log(player.spots);
+        console.log(loser.spots);
 
         // clear gameboard dom
         ModifyDom.clearDisplay();
+
+        // clear winner text
+        ModifyDom.restartGame();
     },{once:true});
 
-
 }
-
-
 
 function createGrid(){
     const gameContainer = document.getElementById('game-container');
@@ -231,4 +235,4 @@ function createGrid(){
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
     createGrid();
-});
+},{once:true});
