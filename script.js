@@ -90,6 +90,7 @@ function updateGameboard(player, position){
     if(Gameboard.checkAvail(position)){ // true if spot is open
         Gameboard.placeMark(player, position, player.sign); // update gameboard
         player.spots.push(position); // array that holds the player's position
+
         // display on board
         const sq = document.getElementById(`sq-${position}`)
         sq.setAttribute('class', 'sq-item');
@@ -139,6 +140,10 @@ function endGame(player){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
 
+    console.log(playerOne);
+    console.log(playerTwo);
+    console.log(player);
+
     console.log(player.name + ' wins')
     let gameover = document.getElementById('gameover');
     gameover.style.display = 'block';
@@ -147,8 +152,15 @@ function endGame(player){
     winner.innerHTML = `${player.name} wins!`
 
     let loser;
-    if(player.name == 'playerOne') loser = playerTwo;
-    else if(player.name == 'playerTwo') loser = playerOne;
+    switch(player){
+        case playerOne:
+            loser = playerTwo;
+            break;
+        case playerTwo:
+            loser = playerOne;
+            break;
+    }
+    console.log('the loser is ' + loser.name)
 
     // clear 
     let playAgain = document.getElementById('play-again');
@@ -156,14 +168,13 @@ function endGame(player){
         Gameboard.clearBoard(); // clear gameboard array
         player.clearPlayerBoard(); // clear winner array
         loser.clearPlayerBoard();
+
         console.log(Gameboard.board);
         console.log(player.spots);
+        console.log(loser.spots);
     })
 
 }
-
-
-
 
 
 function createGrid(){
