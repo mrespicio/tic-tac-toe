@@ -72,12 +72,13 @@ function playerFactory(player, sign){
     // spots contain the positions that the player holds on the gameboard
     const spots = [];
     const clearPlayerBoard = (() =>{
-        for(let i = 0; i < 9; i++){
+        for(let i = 0; i < spots.length; i++){
             spots[i] = ''
         }
     });
     const name = player;
-    return {name, clearPlayerBoard, sign, spots}
+    const viewer = () =>{console.log(spots)}
+    return {name, clearPlayerBoard, sign, spots, viewer}
 };
 
 const playerHolder = (() => {
@@ -95,11 +96,11 @@ function updateGameboard(player, position){
         const sq = document.getElementById(`sq-${position}`)
         sq.setAttribute('class', 'sq-item');
         sq.append(`${player.sign}`)
-        Gameboard.viewer()
+        //Gameboard.viewer()
         return true;
     }
-    else{
-        Gameboard.viewer();
+    else{ // spot is taken
+        //Gameboard.viewer();
         return false;
     } 
     
@@ -115,8 +116,6 @@ function gameController(player, pos){
     // while(!winStatus){
         //for(let i = 0; i <= 9; i++){ //for testing
 
-        // enter value that will correspond to array
-        //let pos = prompt('where would p1 like to place');
         // gameboard is updated with player's mark
         updateGameboard(player, pos)
         winStatus = Gameboard.checkWin(player.spots);
@@ -161,19 +160,22 @@ function endGame(player){
 
     // clear 
     let playAgain = document.getElementById('play-again');
-    playAgain.addEventListener('click', () =>{
+    playAgain.addEventListener('click', () =>{ //add click each time
         // clear arrays
         Gameboard.clearBoard(); 
         player.clearPlayerBoard(); 
         loser.clearPlayerBoard();
 
+        Gameboard.viewer();
+        console.log('player one spots are ' + playerOne.spots);
+        console.log('player two spots are ' + playerTwo.spots)
         // console.log(Gameboard.board);
         // console.log(player.spots);
         // console.log(loser.spots);
 
         // clear gameboard dom
         clearGBDom();
-    })
+    },{once:true});
 
 
 }
@@ -209,7 +211,7 @@ function createGrid(){
                     break;
                 case playerTwo:
                     gameController(currentPlayer, position);
-                    currentPlayer = playerOne; // update to next player
+                    currentPlayer = playerOne; 
                     break;
             }
         });
