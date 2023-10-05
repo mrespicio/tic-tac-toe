@@ -137,12 +137,9 @@ function gameController(player, pos){
 // display winner
 // button to clear and restart
 function endGame(player){
+    // reference player objects
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
-
-    console.log(playerOne);
-    console.log(playerTwo);
-    console.log(player);
 
     console.log(player.name + ' wins')
     let gameover = document.getElementById('gameover');
@@ -165,21 +162,32 @@ function endGame(player){
     // clear 
     let playAgain = document.getElementById('play-again');
     playAgain.addEventListener('click', () =>{
-        Gameboard.clearBoard(); // clear gameboard array
-        player.clearPlayerBoard(); // clear winner array
+        // clear arrays
+        Gameboard.clearBoard(); 
+        player.clearPlayerBoard(); 
         loser.clearPlayerBoard();
 
-        console.log(Gameboard.board);
-        console.log(player.spots);
-        console.log(loser.spots);
+        // console.log(Gameboard.board);
+        // console.log(player.spots);
+        // console.log(loser.spots);
+
+        // clear gameboard dom
+        clearGBDom();
     })
+
 
 }
 
+function clearGBDom(){
+    const squares = document.getElementsByClassName('sq-item');
+    for(let i = 0; i < squares.length; i++){
+        squares[i].innerHTML = '';
+    }
+}
 
 function createGrid(){
     const gameContainer = document.getElementById('game-container');
-    // reference players
+    // reference player objects
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     let currentPlayer = playerOne;
@@ -208,10 +216,8 @@ function createGrid(){
         gameContainer.append(square);
     }
 }
-//const sq1 = document.getElementById('sq-0');
 
 const startBtn = document.getElementById('start-btn');
 startBtn.addEventListener('click', () => {
     createGrid();
-    //playGame();
 });
