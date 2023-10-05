@@ -179,10 +179,9 @@ function endGame(player){
 
 function createGrid(){
     const gameContainer = document.getElementById('game-container');
+    // reference players
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
-    // const playerOne = playerFactory('player one', 'x', false);
-    // const playerTwo = playerFactory('player two', 'o', false);
     let currentPlayer = playerOne;
 
     // create rows
@@ -195,13 +194,15 @@ function createGrid(){
         // square functionality
         square.addEventListener('click', () =>{
             //console.log(`youve clicked on #${square.id.charAt(3)}`)
-            if(currentPlayer == playerOne){
-                gameController(currentPlayer, position);
-                currentPlayer = playerTwo; // update to next player
-            }
-            else if(currentPlayer == playerTwo){
-                gameController(currentPlayer, position);
-                currentPlayer = playerOne; // update to next player
+            switch(currentPlayer){
+                case playerOne:
+                    gameController(currentPlayer, position);
+                    currentPlayer = playerTwo;
+                    break;
+                case playerTwo:
+                    gameController(currentPlayer, position);
+                    currentPlayer = playerOne; // update to next player
+                    break;
             }
         });
         gameContainer.append(square);
