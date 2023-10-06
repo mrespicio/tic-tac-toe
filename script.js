@@ -82,16 +82,18 @@ function playerFactory(player, sign){
 const playerHolder = (() => {
     const playerOne = playerFactory('player one', 'x', false);
     const playerTwo = playerFactory('player two', 'o', false);
-    const none = playerFactory('no one');
-    return{playerOne, playerTwo, none}
+    const none = playerFactory('no one')
+    let currentPlayer = playerOne;
+    return{playerOne, playerTwo, none, currentPlayer}
 })();
 
 const ModifyDom = (() => {
     const gameContainer = document.getElementById('game-container');
 
     const displayMark = (player, position) =>{
+        //console.log('the player to display is ' + player.sign)
         const sq = document.getElementById(`sq-${position}`)
-        sq.setAttribute('class', 'sq-item');
+        //sq.setAttribute('class', 'sq-item');
         sq.append(`${player.sign}`) 
     }
 
@@ -131,7 +133,6 @@ function updateGameboard(player, position){
     else{ // spot is taken
         return false;
     } 
-    
 }
 
 function gameController(player, pos){
@@ -200,13 +201,15 @@ function endGame(player){
     // console.log('player two was at ' + playerTwo.spots);
 
     // remove event from squares
-    // const squares = document.getElementsByClassName('sq-item');
-    // for(let i = 0; i < squares.length; i++){
-    //     squares[i].removeEventListener('click', (e));
-    //     //console.log(squares[i])
-    // }
+    const squares = document.getElementsByClassName('sq-item');
+    for(let i = 0; i < squares.length; i++){
+        squares[i].removeEventListener('click', getCurrent());
+        //console.log(squares[i])
+    }
 
-    ModifyDom.gameContainer.addEventListener('click', () =>{})
+    // ModifyDom.gameContainer.addEventListener('click', function(e){
+    //     if(e.target !== this) return;
+    // })
 
     playAgain(player, loser);
 }
@@ -214,25 +217,39 @@ function endGame(player){
 function switchPlayers(currentPlayer, position){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
+    let playerUpdate;
+    console.log('the current player is ' + currentPlayer)
 
     switch(currentPlayer){
         case playerOne:
             gameController(currentPlayer, position);
-            currentPlayer = playerTwo;
+            playerUpdate = playerTwo;
             break;
         case playerTwo:
             gameController(currentPlayer, position);
-            currentPlayer = playerOne; 
+            playerUpdate = playerOne; 
             break;
     }
-    return currentPlayer;
+    console.log('the new player is ' + playerUpdate)
+    //console.log('the updated player is ' + playerHolder.currentPlayer)
+    return playerUpdate;
 }
+const getCurrent = (currentPlayer, position) =>{
+    //console.log(`youve clicked on #${square.id.charAt(3)}`)
+    console.log(currentPlayer);
+    playerHolder.currentPlayer = switchPlayers(currentPlayer, position);
+}
+
+function printHello(){
+    console.log('hello');
+}
+
 
 function createGrid(){
     // reference player objects
-    const playerOne = playerHolder.playerOne;
-    const playerTwo = playerHolder.playerTwo;
-    let currentPlayer = playerOne;
+    // const playerOne = playerHolder.playerOne;
+    // const playerTwo = playerHolder.playerTwo;
+    let currentPlayer = playerHolder.currentPlayer;
 
     // create rows
     for(i = 0; i < 9; i++ ){
@@ -242,15 +259,21 @@ function createGrid(){
         const position = Number(square.id.charAt(3));
         
         // square functionality
-        square.addEventListener('click', () =>{
-            //console.log(`youve clicked on #${square.id.charAt(3)}`)
-            currentPlayer = switchPlayers(currentPlayer, position)
-        });
+        //square.addEventListener('click', getCurrent(currentPlayer, position));
+
+
+        // square.addEventListener('click', () = >{
+        //    currentPlayer = switchPlayers(currentPlayer, position)});
+
+        square.addEventListener('click', () => {getCurrent()})
+        //square.addEventListener('click', () => {console.log('hello')})
+
         ModifyDom.gameContainer.append(square);
     }
 }
 
-const startBtn = document.getElementById('start-btn');
-startBtn.addEventListener('click', () => {
-    createGrid();
-},{once:true});
+createGrid();
+// const startBtn = document.getElementById('start-btn');
+// startBtn.addEventListener('click', () => {
+//     createGrid();
+// },{once:true});
