@@ -82,11 +82,13 @@ function playerFactory(player, sign){
 const playerHolder = (() => {
     const playerOne = playerFactory('player one', 'x', false);
     const playerTwo = playerFactory('player two', 'o', false);
-    return{playerOne, playerTwo}
+    const none = playerFactory('no one');
+    return{playerOne, playerTwo, none}
 })();
 
-
 const ModifyDom = (() => {
+    const gameContainer = document.getElementById('game-container');
+
     const displayMark = (player, position) =>{
         const sq = document.getElementById(`sq-${position}`)
         sq.setAttribute('class', 'sq-item');
@@ -109,7 +111,6 @@ const ModifyDom = (() => {
         gameover.style.display = 'none';
     }
 
-    // clear display + remove event
     const clearDisplay = () =>{
         const squares = document.getElementsByClassName('sq-item');
         for(let i = 0; i < squares.length; i++){
@@ -117,10 +118,7 @@ const ModifyDom = (() => {
         }
     }
 
-    const makeSquares = () =>{
-
-    }
-    return{displayMark, gameOver, restartGame, clearDisplay}
+    return{gameContainer, displayMark, gameOver, restartGame, clearDisplay}
 })();
 
 function updateGameboard(player, position){
@@ -152,15 +150,38 @@ function gameController(player, pos){
 
         if(Gameboard.isFull(Gameboard.board)){   
             console.log('no winner!')
+            endGame();
             //break;
         }
     //}
 }
 
+function playAgain(player, loser){
+    // clear 
+    let playAgain = document.getElementById('play-again');
+    playAgain.addEventListener('click', () =>{ //add click each time
+        Gameboard.clearBoard(); 
+        player.clearPlayerBoard(); 
+        loser.clearPlayerBoard();
+
+        //Gameboard.viewer();
+        // console.log(player.spots);
+        // console.log(loser.spots);
+
+        // clear gameboard dom
+        ModifyDom.clearDisplay();
+
+        // clear winner text
+        ModifyDom.restartGame();
+    },{once:true});
+}
+
 function endGame(player){
+    if(player == null) player = playerHolder.none;
     // reference player objects
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
+    const none = playerHolder.none;
     
     let loser;
     switch(player){
@@ -170,38 +191,44 @@ function endGame(player){
         case playerTwo:
             loser = playerOne;
             break;
+        case none:
+            loser = none;
     }
-
     ModifyDom.gameOver(player, loser);
 
-    console.log('player one was at ' + playerOne.spots);
-    console.log('player two was at ' + playerTwo.spots);
+    // console.log('player one was at ' + playerOne.spots);
+    // console.log('player two was at ' + playerTwo.spots);
 
     // remove event from squares
+    // const squares = document.getElementsByClassName('sq-item');
+    // for(let i = 0; i < squares.length; i++){
+    //     squares[i].removeEventListener('click', (e));
+    //     //console.log(squares[i])
+    // }
 
-    // clear 
-    let playAgain = document.getElementById('play-again');
-    playAgain.addEventListener('click', () =>{ //add click each time
-        // clear arrays
-        Gameboard.clearBoard(); 
-        player.clearPlayerBoard(); 
-        loser.clearPlayerBoard();
+    ModifyDom.gameContainer.addEventListener('click', () =>{})
 
-        //Gameboard.viewer();
-        console.log(player.spots);
-        console.log(loser.spots);
+    playAgain(player, loser);
+}
 
-        // clear gameboard dom
-        ModifyDom.clearDisplay();
+function switchPlayers(currentPlayer, position){
+    const playerOne = playerHolder.playerOne;
+    const playerTwo = playerHolder.playerTwo;
 
-        // clear winner text
-        ModifyDom.restartGame();
-    },{once:true});
-
+    switch(currentPlayer){
+        case playerOne:
+            gameController(currentPlayer, position);
+            currentPlayer = playerTwo;
+            break;
+        case playerTwo:
+            gameController(currentPlayer, position);
+            currentPlayer = playerOne; 
+            break;
+    }
+    return currentPlayer;
 }
 
 function createGrid(){
-    const gameContainer = document.getElementById('game-container');
     // reference player objects
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
@@ -217,18 +244,9 @@ function createGrid(){
         // square functionality
         square.addEventListener('click', () =>{
             //console.log(`youve clicked on #${square.id.charAt(3)}`)
-            switch(currentPlayer){
-                case playerOne:
-                    gameController(currentPlayer, position);
-                    currentPlayer = playerTwo;
-                    break;
-                case playerTwo:
-                    gameController(currentPlayer, position);
-                    currentPlayer = playerOne; 
-                    break;
-            }
+            currentPlayer = switchPlayers(currentPlayer, position)
         });
-        gameContainer.append(square);
+        ModifyDom.gameContainer.append(square);
     }
 }
 
