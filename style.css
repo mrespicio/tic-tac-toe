@@ -1,64 +1,83 @@
-*{
+*, *::before, *::after{
     margin: 0;
     padding: 0;
     border: 0;
     --dark-red: #D90429;
     --mid-white: #EDF2F4;
     --dark-black: #2b2d42;
-
+}
+h1, h2{
+    text-align: center;
 }
 
+
+body{
+    background-color: bisque;
+}
 #game-container{
-    max-width: 320px;
-    max-height: 320px;
+    /* width: 100%;
+    height: 100%; */
+
+
+    max-height: 31rem;
+    max-width: 31rem;
+
+    padding: 0;
     margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-}
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    background-color: white;
+    gap: 2px;
 
-h1{
-    margin: 0 auto;
-    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
-
-h2{
-    text-align: center;
-}
-
-.icon::before{
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antaliased;
-}
-
-.diamond::after{
-    font-family: 'Font Awesome 6 Free';
-    content: '\f219';
-    font-size: 20px;
-    color: var(--dark-black);
-}
-
-.heart::after{
-    font-family: 'Font Awesome 6 Free';
-    content: '\f004';
-    font-size: 20px;
-    color: var(--dark-red);
-}
-
 
 .sq-item{
-    border: solid 1px black;
-    height: 100px;
-    width: 100px;
+    /* border: solid 1px black; */
+    background-color: var(--mid-white);
+
+    /* max-width: 10rem;
+    max-height: 10rem; */
+    height: 10rem;
+    width: 10rem;
+    
     display: block;
     margin: 0px;
     padding: 0 auto;
+
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
+
 
 .sq-item:hover{
     background-color: lightblue;
 }
+
+
+.diamond::after, .heart::after{
+    font-family: 'Font Awesome 6 Free';
+    font-size: 2rem;
+    position: relative;
+    /* top: 30%; */
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 0;
+}
+
+.diamond::after{
+    content: '\f219';
+    color: var(--dark-black);
+}
+
+.heart::after{
+    content: '\f004';
+    color: var(--dark-red);
+}
+
 
 
 #gameover{

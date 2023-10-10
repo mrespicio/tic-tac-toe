@@ -95,6 +95,7 @@ const ModifyDom = (() => {
     const displayMark = (player, position) =>{
         //console.log('the player to display is ' + player.sign)
         const sq = document.getElementById(`sq-${position}`)
+
         if(player == playerHolder.playerOne)
             sq.classList.add('diamond');
         else if(player == playerHolder.playerTwo)
@@ -120,6 +121,7 @@ const ModifyDom = (() => {
         const squares = document.getElementsByClassName('sq-item');
         for(let i = 0; i < squares.length; i++){
             squares[i].innerHTML = '';
+            squares[i].classList.remove('heart', 'diamond')
         }
     }
     return{gameContainer, header, displayMark, gameOver, restartGame, clearDisplay}
