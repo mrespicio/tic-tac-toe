@@ -253,31 +253,3 @@ createGrid();
 // startBtn.addEventListener('click', () => {
 //     createGrid();
 // },{once:true});
-
-
-
-// GOAL: create an event listener to perform an action with given arguments then remove function from event listener
-
-// const container = document.getElementById('game-container')
-// const item = document.createElement('button');
-// item.innerHTML = 'item';
-// container.append(item);
-
-// callback function
-// function printText(str){
-//     console.log(str)
-// }
-
-// function printText(arg){
-//     return function(){console.log(arg)}
-// }
-
-// attempt 1: no arguments + can remove function after
-// item.addEventListener('click', printText); 
-// item.removeEventListener('click', printText);
-
-// // attempt 2: // prints but invokes immediately, even when event hasn't happen
-// item.addEventListener('click', printText('text')); 
-
-// // attempt 3:  works but cannot remove after due to being unable to reference the same function
-// item.addEventListener('click', () => printText('text')); 
