@@ -6,6 +6,9 @@
     flex-wrap: wrap;
 }
 
+h1{
+    margin: 0 auto;
+}
 .sq-item{
     border: solid 1px black;
     height: 100px;
@@ -16,17 +19,20 @@
     text-align: center;
 }
 
-.sq-item-placed{
-
+.sq-item:hover{
+    background-color: lightblue;
 }
 
+
 #gameover{
-    display: none;
+    /* display: none; */
+    /* display: block; */
+    margin: 20px  auto;
     background-color: white;
-    position: absolute;
-    top: 10px;
-    left: 50px;
-    /* margin: 0 auto; */
+    width: 200px;
     border: solid 1px black;
     max-width: 320px;
+    text-align: center;
+    padding: 20px;
+
 }

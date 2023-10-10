@@ -84,12 +84,12 @@ const playerHolder = (() => {
     const playerTwo = playerFactory('player two', 'o', false);
     const none = playerFactory('no one');
     let currentPlayer = playerOne;
-    let currentPosition;
-    return {playerOne, playerTwo, none, currentPlayer, currentPosition}
+    return {playerOne, playerTwo, none, currentPlayer}
 })();
 
 const ModifyDom = (() => {
     const gameContainer = document.getElementById('game-container');
+    const header = document.getElementById('header');
 
     const displayMark = (player, position) =>{
         //console.log('the player to display is ' + player.sign)
@@ -102,6 +102,8 @@ const ModifyDom = (() => {
         let gameover = document.getElementById('gameover');
         gameover.style.display = 'block';
 
+        //ModifyDom.header.innerHTML = `${winner.name} wins!`;
+
         let winnerText = document.getElementById('winner');
         winnerText.innerHTML = `${winner.name} wins!`
 
@@ -110,8 +112,8 @@ const ModifyDom = (() => {
     }
 
     const restartGame = () =>{
-        let gameover = document.getElementById('gameover');
-        gameover.style.display = 'none';
+        // let gameover = document.getElementById('gameover');
+        // gameover.style.display = 'none';
     }
 
     const clearDisplay = () =>{
@@ -120,8 +122,7 @@ const ModifyDom = (() => {
             squares[i].innerHTML = '';
         }
     }
-
-    return{gameContainer, displayMark, gameOver, restartGame, clearDisplay}
+    return{gameContainer, header, displayMark, gameOver, restartGame, clearDisplay}
 })();
 
 function updateGameboard(player, position){
@@ -150,7 +151,7 @@ function gameController(player, pos){
             //break;
         } 
 
-        if(Gameboard.isFull(Gameboard.board)){   
+        else if(Gameboard.isFull(Gameboard.board)){   
             console.log('no winner!')
             endGame();
             //break;
@@ -161,7 +162,7 @@ function gameController(player, pos){
 function playAgain(player, loser){
     // clear 
     let playAgain = document.getElementById('play-again');
-    playAgain.addEventListener('click', () =>{ //add click each time
+    playAgain.addEventListener('click', () =>{ 
         Gameboard.clearBoard(); 
         player.clearPlayerBoard(); 
         loser.clearPlayerBoard();
@@ -216,17 +217,18 @@ function switchPlayers(currentPlayer, position){
     switch(currentPlayer){
         case playerOne:
             gameController(currentPlayer, position);
+            ModifyDom.header.innerHTML = 'Player 2\'s Turn'
             playerUpdate = playerTwo;
             break;
         case playerTwo:
             gameController(currentPlayer, position);
+            ModifyDom.header.innerHTML = 'Player 1\'s Turn'
             playerUpdate = playerOne; 
             break;
     }
     // console.log('the new player is ' + playerUpdate)
     return playerUpdate;
 }
-
 
 function createGrid(){
     // reference player objects
@@ -241,6 +243,7 @@ function createGrid(){
         square.setAttribute('class', 'sq-item');
         const position = Number(square.id.charAt(3));
 
+        // functionality to squares
         square.addEventListener('click', () =>{
            currentPlayer = switchPlayers(currentPlayer, position)});
 
