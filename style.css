@@ -1,3 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    --dark-red: #D90429;
+    --mid-white: #EDF2F4;
+    --dark-black: #2b2d42;
+
+}
+
 #game-container{
     max-width: 320px;
     max-height: 320px;
@@ -8,7 +18,34 @@
 
 h1{
     margin: 0 auto;
+    text-align: center;
 }
+
+h2{
+    text-align: center;
+}
+
+.icon::before{
+    display: inline-block;
+    text-rendering: auto;
+    -webkit-font-smoothing: antaliased;
+}
+
+.diamond::after{
+    font-family: 'Font Awesome 6 Free';
+    content: '\f219';
+    font-size: 20px;
+    color: var(--dark-black);
+}
+
+.heart::after{
+    font-family: 'Font Awesome 6 Free';
+    content: '\f004';
+    font-size: 20px;
+    color: var(--dark-red);
+}
+
+
 .sq-item{
     border: solid 1px black;
     height: 100px;
@@ -25,7 +62,7 @@ h1{
 
 
 #gameover{
-    /* display: none; */
+    display: none;
     /* display: block; */
     margin: 20px  auto;
     background-color: white;

@@ -90,20 +90,21 @@ const playerHolder = (() => {
 const ModifyDom = (() => {
     const gameContainer = document.getElementById('game-container');
     const header = document.getElementById('header');
+    let gameover = document.getElementById('gameover');
 
     const displayMark = (player, position) =>{
         //console.log('the player to display is ' + player.sign)
         const sq = document.getElementById(`sq-${position}`)
+        if(player == playerHolder.playerOne)
+            sq.classList.add('diamond');
+        else if(player == playerHolder.playerTwo)
+            sq.classList.add('heart');
         //sq.setAttribute('class', 'sq-item');
-        sq.append(`${player.sign}`); 
+        //sq.append(`${player.sign}`); 
     }
 
     const gameOver = (winner, loser) =>{
-        let gameover = document.getElementById('gameover');
         gameover.style.display = 'block';
-
-        //ModifyDom.header.innerHTML = `${winner.name} wins!`;
-
         let winnerText = document.getElementById('winner');
         winnerText.innerHTML = `${winner.name} wins!`
 
@@ -112,8 +113,7 @@ const ModifyDom = (() => {
     }
 
     const restartGame = () =>{
-        // let gameover = document.getElementById('gameover');
-        // gameover.style.display = 'none';
+        gameover.style.display = 'none';
     }
 
     const clearDisplay = () =>{
