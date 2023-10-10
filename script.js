@@ -82,9 +82,10 @@ function playerFactory(player, sign){
 const playerHolder = (() => {
     const playerOne = playerFactory('player one', 'x', false);
     const playerTwo = playerFactory('player two', 'o', false);
-    const none = playerFactory('no one')
+    const none = playerFactory('no one');
     let currentPlayer = playerOne;
-    return{playerOne, playerTwo, none, currentPlayer}
+    let currentPosition;
+    return {playerOne, playerTwo, none, currentPlayer, currentPosition}
 })();
 
 const ModifyDom = (() => {
@@ -94,7 +95,7 @@ const ModifyDom = (() => {
         //console.log('the player to display is ' + player.sign)
         const sq = document.getElementById(`sq-${position}`)
         //sq.setAttribute('class', 'sq-item');
-        sq.append(`${player.sign}`) 
+        sq.append(`${player.sign}`); 
     }
 
     const gameOver = (winner, loser) =>{
@@ -197,20 +198,12 @@ function endGame(player){
     }
     ModifyDom.gameOver(player, loser);
 
-    // console.log('player one was at ' + playerOne.spots);
-    // console.log('player two was at ' + playerTwo.spots);
-
     // remove event from squares
     const squares = document.getElementsByClassName('sq-item');
     for(let i = 0; i < squares.length; i++){
-        squares[i].removeEventListener('click', getCurrent());
+        //squares[i].removeEventListener('click', getCurrent());
         //console.log(squares[i])
     }
-
-    // ModifyDom.gameContainer.addEventListener('click', function(e){
-    //     if(e.target !== this) return;
-    // })
-
     playAgain(player, loser);
 }
 
@@ -230,18 +223,8 @@ function switchPlayers(currentPlayer, position){
             playerUpdate = playerOne; 
             break;
     }
-    console.log('the new player is ' + playerUpdate)
-    //console.log('the updated player is ' + playerHolder.currentPlayer)
+    // console.log('the new player is ' + playerUpdate)
     return playerUpdate;
-}
-const getCurrent = (currentPlayer, position) =>{
-    //console.log(`youve clicked on #${square.id.charAt(3)}`)
-    console.log(currentPlayer);
-    playerHolder.currentPlayer = switchPlayers(currentPlayer, position);
-}
-
-function printHello(){
-    console.log('hello');
 }
 
 
@@ -257,16 +240,9 @@ function createGrid(){
         square.setAttribute('id', `sq-${i}`)
         square.setAttribute('class', 'sq-item');
         const position = Number(square.id.charAt(3));
-        
-        // square functionality
-        //square.addEventListener('click', getCurrent(currentPlayer, position));
 
-
-        // square.addEventListener('click', () = >{
-        //    currentPlayer = switchPlayers(currentPlayer, position)});
-
-        square.addEventListener('click', () => {getCurrent()})
-        //square.addEventListener('click', () => {console.log('hello')})
+        square.addEventListener('click', () =>{
+           currentPlayer = switchPlayers(currentPlayer, position)});
 
         ModifyDom.gameContainer.append(square);
     }
@@ -277,3 +253,31 @@ createGrid();
 // startBtn.addEventListener('click', () => {
 //     createGrid();
 // },{once:true});
+
+
+
+// GOAL: create an event listener to perform an action with given arguments then remove function from event listener
+
+// const container = document.getElementById('game-container')
+// const item = document.createElement('button');
+// item.innerHTML = 'item';
+// container.append(item);
+
+// callback function
+// function printText(str){
+//     console.log(str)
+// }
+
+// function printText(arg){
+//     return function(){console.log(arg)}
+// }
+
+// attempt 1: no arguments + can remove function after
+// item.addEventListener('click', printText); 
+// item.removeEventListener('click', printText);
+
+// // attempt 2: // prints but invokes immediately, even when event hasn't happen
+// item.addEventListener('click', printText('text')); 
+
+// // attempt 3:  works but cannot remove after due to being unable to reference the same function
+// item.addEventListener('click', () => printText('text')); 

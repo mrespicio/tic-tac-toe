@@ -22,6 +22,11 @@
 
 #gameover{
     display: none;
+    background-color: white;
+    position: absolute;
+    top: 10px;
+    left: 50px;
+    /* margin: 0 auto; */
     border: solid 1px black;
     max-width: 320px;
 }
