@@ -76,14 +76,9 @@ const ModifyDom = (() => {
     let gameover = document.getElementById('gameover');
 
     const displayMark = (player, position) =>{
-        //console.log('the player to display is ' + player.sign)
         const sq = document.getElementById(`sq-${position}`)
-
-        if(player == playerHolder.playerOne)
-            sq.classList.add('diamond');
-        else if(player == playerHolder.playerTwo)
-            sq.classList.add('heart');
-        //sq.setAttribute('class', 'sq-item');
+        if(player == playerHolder.playerOne) sq.classList.add('diamond');
+        else if(player == playerHolder.playerTwo) sq.classList.add('heart');
         //sq.append(`${player.sign}`); 
     }
 
@@ -149,12 +144,12 @@ function playAgain(player, loser){
     let playAgain = document.getElementById('play-again');
     playAgain.addEventListener('click', () =>{ 
         Gameboard.clearBoard(); 
-        player.clearPlayerBoard(); 
-        loser.clearPlayerBoard();
+        playerHolder.playerOne.clearPlayerBoard(); 
+        playerHolder.playerTwo.clearPlayerBoard();
 
         //Gameboard.viewer();
-        // console.log(player.spots);
-        // console.log(loser.spots);
+        console.log('the cleared board for p1 is ' + playerHolder.playerOne.spots);
+        console.log('the cleared board for p2 is ' + playerHolder.playerTwo.spots);
 
         // clear gameboard dom
         ModifyDom.clearDisplay();
@@ -170,7 +165,10 @@ function endGame(player){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     const none = playerHolder.none;
-    
+
+    console.log('player one is ' + playerOne.spots)
+    console.log('player two is ' + playerTwo.spots)
+
     let loser;
     switch(player){
         case playerOne:
@@ -197,7 +195,7 @@ function switchPlayers(currentPlayer, position){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     let playerUpdate;
-    console.log('the current player is ' + currentPlayer)
+    // console.log('the current player is ' + currentPlayer)
 
     switch(currentPlayer){
         case playerOne:
