@@ -154,7 +154,6 @@ function switchPlayers(currentPlayer, position){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     let playerUpdate;
-
     switch(currentPlayer){
         case playerOne:
             gameController(currentPlayer, position);
@@ -167,17 +166,11 @@ function switchPlayers(currentPlayer, position){
             playerUpdate = playerOne; 
             break;
     }
-    // console.log('the new player is ' + playerUpdate)
     return playerUpdate;
 }
 
 function createGrid(){
-    // reference player objects
-    // const playerOne = playerHolder.playerOne;
-    // const playerTwo = playerHolder.playerTwo;
     let currentPlayer = playerHolder.currentPlayer;
-
-    // create rows
     for(i = 0; i < 9; i++ ){
         let square = document.createElement('div');
         square.setAttribute('id', `sq-${i}`)
@@ -187,13 +180,8 @@ function createGrid(){
         // functionality to squares
         square.addEventListener('click', () =>{
            currentPlayer = switchPlayers(currentPlayer, position)});
-
         ModifyDom.gameContainer.append(square);
     }
 }
 
 createGrid();
-// const startBtn = document.getElementById('start-btn');
-// startBtn.addEventListener('click', () => {
-//     createGrid();
-// },{once:true});
