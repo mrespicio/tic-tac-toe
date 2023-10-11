@@ -10,7 +10,7 @@ const Gameboard = (() => {
     })
 
     // returns new board with mark placed
-    const placeMark = ((player, position, sign) =>{
+    const placeMark = ((position, sign) =>{
         board.splice(position, 1, sign);
     })
 
@@ -34,21 +34,9 @@ const Gameboard = (() => {
     // make sure the winning array combo is within the player's array
     const checkWin = ((playerSpots) =>{
         return winConditions.some(winArr =>{ // iterate through all win conditions
-            // console.log('the current win condition is ' + winArr); 
-            // console.log('the player is at ' + playerSpots);
-
-            // winArr is each win condition arry like [0, 1, 2], [0, 3, 6]...
-            // tests if all elements in playerspots arr meet conditions
-
-            // player spots has values inside a winning array
-            // if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined))){ 
-            //     return true;
-            // }
-
-            //winArr.every(n => (playerSpots.includes(n))) 
             return winArr.every(n => (playerSpots.find(x => x == n) !== undefined));
-        }) //winConditions
-    }) //checkWin
+        }) 
+    }) 
 
     const clearBoard = (() =>{
         for(let i = 0; i < boardMax; i++){
@@ -75,8 +63,7 @@ function playerFactory(player, sign){
         spots.length = 0;
     });
     const name = player;
-    const viewer = () =>{console.log(spots)}
-    return {name, clearPlayerBoard, sign, spots, viewer}
+    return {name, clearPlayerBoard, sign, spots}
 };
 
 const playerHolder = (() => {
@@ -93,24 +80,19 @@ const ModifyDom = (() => {
     let gameover = document.getElementById('gameover');
 
     const displayMark = (player, position) =>{
-        //console.log('the player to display is ' + player.sign)
         const sq = document.getElementById(`sq-${position}`)
 
         if(player == playerHolder.playerOne)
             sq.classList.add('diamond');
         else if(player == playerHolder.playerTwo)
             sq.classList.add('heart');
-        //sq.setAttribute('class', 'sq-item');
         //sq.append(`${player.sign}`); 
     }
 
-    const gameOver = (winner, loser) =>{
+    const gameOver = (winner) =>{
         gameover.style.display = 'block';
         let winnerText = document.getElementById('winner');
         winnerText.innerHTML = `${winner.name} wins!`
-
-        // let loserText = document.getElementById('loser');
-        // loserText.innerHTML = `${loser.name} loses!`
     }
 
     const restartGame = () =>{
@@ -120,7 +102,7 @@ const ModifyDom = (() => {
     const clearDisplay = () =>{
         const squares = document.getElementsByClassName('sq-item');
         for(let i = 0; i < squares.length; i++){
-            squares[i].innerHTML = '';
+            // squares[i].innerHTML = '';
             squares[i].classList.remove('heart', 'diamond')
         }
     }
@@ -140,38 +122,23 @@ function updateGameboard(player, position){
 }
 
 function gameController(player, pos){
-    // check if win condition is met
     let winStatus = false;
     // while(!winStatus){
-        //for(let i = 0; i <= 9; i++){ //for testing
+    //for(let i = 0; i <= 9; i++){ //for testing
 
-        // gameboard is updated with player's mark
-        updateGameboard(player, pos)
-        winStatus = Gameboard.checkWin(player.spots);
-        if(winStatus) {
-            endGame(player);
-            //break;
-        } 
-
-        else if(Gameboard.isFull(Gameboard.board)){   
-            console.log('no winner!')
-            endGame();
-            //break;
-        }
-    //}
+    // gameboard is updated with player's mark
+    updateGameboard(player, pos)
+    winStatus = Gameboard.checkWin(player.spots);
+    if(winStatus) endGame(player);
+    else if(Gameboard.isFull(Gameboard.board)) endGame();
 }
 
-function playAgain(player, loser){
-    // clear 
+function playAgain(){
     let playAgain = document.getElementById('play-again');
     playAgain.addEventListener('click', () =>{ 
         Gameboard.clearBoard(); 
-        player.clearPlayerBoard(); 
-        loser.clearPlayerBoard();
-
-        //Gameboard.viewer();
-        // console.log(player.spots);
-        // console.log(loser.spots);
+        playerHolder.playerOne.clearPlayerBoard();
+        playerHolder.playerTwo.clearPlayerBoard();
 
         // clear gameboard dom
         ModifyDom.clearDisplay();
@@ -183,31 +150,8 @@ function playAgain(player, loser){
 
 function endGame(player){
     if(player == null) player = playerHolder.none;
-    // reference player objects
-    const playerOne = playerHolder.playerOne;
-    const playerTwo = playerHolder.playerTwo;
-    const none = playerHolder.none;
-    
-    let loser;
-    switch(player){
-        case playerOne:
-            loser = playerTwo;
-            break;
-        case playerTwo:
-            loser = playerOne;
-            break;
-        case none:
-            loser = none;
-    }
-    ModifyDom.gameOver(player, loser);
-
-    // remove event from squares
-    const squares = document.getElementsByClassName('sq-item');
-    for(let i = 0; i < squares.length; i++){
-        //squares[i].removeEventListener('click', getCurrent());
-        //console.log(squares[i])
-    }
-    playAgain(player, loser);
+    ModifyDom.gameOver(player);
+    playAgain();
 }
 
 function switchPlayers(currentPlayer, position){
@@ -228,17 +172,11 @@ function switchPlayers(currentPlayer, position){
             playerUpdate = playerOne; 
             break;
     }
-    // console.log('the new player is ' + playerUpdate)
     return playerUpdate;
 }
 
 function createGrid(){
-    // reference player objects
-    // const playerOne = playerHolder.playerOne;
-    // const playerTwo = playerHolder.playerTwo;
     let currentPlayer = playerHolder.currentPlayer;
-
-    // create rows
     for(i = 0; i < 9; i++ ){
         let square = document.createElement('div');
         square.setAttribute('id', `sq-${i}`)
@@ -248,13 +186,8 @@ function createGrid(){
         // functionality to squares
         square.addEventListener('click', () =>{
            currentPlayer = switchPlayers(currentPlayer, position)});
-
         ModifyDom.gameContainer.append(square);
     }
 }
 
 createGrid();
-// const startBtn = document.getElementById('start-btn');
-// startBtn.addEventListener('click', () => {
-//     createGrid();
-// },{once:true});
