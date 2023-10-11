@@ -1,4 +1,10 @@
 # tic-tac-toe
+
+[Live Demo](https://mrespicio.github.io/tic-tac-toe/)
+
+## Preview
+![image of tic-tac-toe game](preview.png)
+
 ## Project Goals
 Create a Tic-Tac-Toe web application focusing on closure and creating private variables for more organized code.
 
