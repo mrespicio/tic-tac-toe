@@ -81,7 +81,6 @@ const ModifyDom = (() => {
 
     const displayMark = (player, position) =>{
         const sq = document.getElementById(`sq-${position}`)
-
         if(player == playerHolder.playerOne)
             sq.classList.add('diamond');
         else if(player == playerHolder.playerTwo)
@@ -158,7 +157,8 @@ function switchPlayers(currentPlayer, position){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     let playerUpdate;
-    console.log('the current player is ' + currentPlayer)
+
+    console.log('you clicked position ' + position)
 
     switch(currentPlayer){
         case playerOne:
