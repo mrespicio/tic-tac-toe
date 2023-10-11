@@ -59,8 +59,7 @@ function playerFactory(player, sign){
         spots.length = 0;
     });
     const name = player;
-    const viewer = () =>{console.log(spots)}
-    return {name, clearPlayerBoard, sign, spots, viewer}
+    return {name, clearPlayerBoard, sign, spots}
 };
 
 const playerHolder = (() => {
