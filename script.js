@@ -5,9 +5,6 @@ const Gameboard = (() => {
         '', '', '',
         '','',''
     ];
-    const viewer = (() =>{
-        console.log(board);
-    })
 
     // returns new board with mark placed
     const placeMark = ((position, sign) =>{
@@ -47,7 +44,6 @@ const Gameboard = (() => {
     return{ 
         board,
         boardMax,
-        viewer,
         placeMark,
         checkAvail,
         isFull,
@@ -81,10 +77,8 @@ const ModifyDom = (() => {
 
     const displayMark = (player, position) =>{
         const sq = document.getElementById(`sq-${position}`)
-        if(player == playerHolder.playerOne)
-            sq.classList.add('diamond');
-        else if(player == playerHolder.playerTwo)
-            sq.classList.add('heart');
+        if(player == playerHolder.playerOne) sq.classList.add('diamond');
+        else if(player == playerHolder.playerTwo) sq.classList.add('heart');
         //sq.append(`${player.sign}`); 
     }
 
@@ -101,7 +95,6 @@ const ModifyDom = (() => {
     const clearDisplay = () =>{
         const squares = document.getElementsByClassName('sq-item');
         for(let i = 0; i < squares.length; i++){
-            // squares[i].innerHTML = '';
             squares[i].classList.remove('heart', 'diamond')
         }
     }
@@ -136,8 +129,12 @@ function playAgain(){
     let playAgain = document.getElementById('play-again');
     playAgain.addEventListener('click', () =>{ 
         Gameboard.clearBoard(); 
-        playerHolder.playerOne.clearPlayerBoard();
+        playerHolder.playerOne.clearPlayerBoard(); 
         playerHolder.playerTwo.clearPlayerBoard();
+
+        //Gameboard.viewer();
+        // console.log('the cleared board for p1 is ' + playerHolder.playerOne.spots);
+        // console.log('the cleared board for p2 is ' + playerHolder.playerTwo.spots);
 
         // clear gameboard dom
         ModifyDom.clearDisplay();
@@ -147,9 +144,9 @@ function playAgain(){
     },{once:true});
 }
 
-function endGame(player){
-    if(player == null) player = playerHolder.none;
-    ModifyDom.gameOver(player);
+function endGame(winner){
+    if(winner == null) winner = playerHolder.none;
+    ModifyDom.gameOver(winner);
     playAgain();
 }
 
@@ -157,9 +154,6 @@ function switchPlayers(currentPlayer, position){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     let playerUpdate;
-
-    console.log('you clicked position ' + position)
-
     switch(currentPlayer){
         case playerOne:
             gameController(currentPlayer, position);
