@@ -82,13 +82,10 @@ const ModifyDom = (() => {
         //sq.append(`${player.sign}`); 
     }
 
-    const gameOver = (winner, loser) =>{
+    const gameOver = (winner) =>{
         gameover.style.display = 'block';
         let winnerText = document.getElementById('winner');
         winnerText.innerHTML = `${winner.name} wins!`
-
-        // let loserText = document.getElementById('loser');
-        // loserText.innerHTML = `${loser.name} loses!`
     }
 
     const restartGame = () =>{
@@ -98,7 +95,6 @@ const ModifyDom = (() => {
     const clearDisplay = () =>{
         const squares = document.getElementsByClassName('sq-item');
         for(let i = 0; i < squares.length; i++){
-            squares[i].innerHTML = '';
             squares[i].classList.remove('heart', 'diamond')
         }
     }
@@ -148,8 +144,8 @@ function playAgain(player, loser){
         playerHolder.playerTwo.clearPlayerBoard();
 
         //Gameboard.viewer();
-        console.log('the cleared board for p1 is ' + playerHolder.playerOne.spots);
-        console.log('the cleared board for p2 is ' + playerHolder.playerTwo.spots);
+        // console.log('the cleared board for p1 is ' + playerHolder.playerOne.spots);
+        // console.log('the cleared board for p2 is ' + playerHolder.playerTwo.spots);
 
         // clear gameboard dom
         ModifyDom.clearDisplay();
