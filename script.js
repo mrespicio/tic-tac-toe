@@ -114,25 +114,15 @@ function updateGameboard(player, position){
 }
 
 function gameController(player, pos){
-    // check if win condition is met
     let winStatus = false;
     // while(!winStatus){
-        //for(let i = 0; i <= 9; i++){ //for testing
+    //for(let i = 0; i <= 9; i++){ //for testing
 
-        // gameboard is updated with player's mark
-        updateGameboard(player, pos)
-        winStatus = Gameboard.checkWin(player.spots);
-        if(winStatus) {
-            endGame(player);
-            //break;
-        } 
-
-        else if(Gameboard.isFull(Gameboard.board)){   
-            console.log('no winner!')
-            endGame();
-            //break;
-        }
-    //}
+    // gameboard is updated with player's mark
+    updateGameboard(player, pos)
+    winStatus = Gameboard.checkWin(player.spots);
+    if(winStatus) endGame(player);
+    else if(Gameboard.isFull(Gameboard.board)) endGame();
 }
 
 function playAgain(player, loser){
