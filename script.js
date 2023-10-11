@@ -5,9 +5,6 @@ const Gameboard = (() => {
         '', '', '',
         '','',''
     ];
-    const viewer = (() =>{
-        console.log(board);
-    })
 
     // returns new board with mark placed
     const placeMark = ((player, position, sign) =>{
@@ -34,18 +31,6 @@ const Gameboard = (() => {
     // make sure the winning array combo is within the player's array
     const checkWin = ((playerSpots) =>{
         return winConditions.some(winArr =>{ // iterate through all win conditions
-            // console.log('the current win condition is ' + winArr); 
-            // console.log('the player is at ' + playerSpots);
-
-            // winArr is each win condition arry like [0, 1, 2], [0, 3, 6]...
-            // tests if all elements in playerspots arr meet conditions
-
-            // player spots has values inside a winning array
-            // if(winArr.every(n => (playerSpots.find(x => x == n) !== undefined))){ 
-            //     return true;
-            // }
-
-            //winArr.every(n => (playerSpots.includes(n))) 
             return winArr.every(n => (playerSpots.find(x => x == n) !== undefined));
         }) //winConditions
     }) //checkWin
@@ -59,7 +44,6 @@ const Gameboard = (() => {
     return{ 
         board,
         boardMax,
-        viewer,
         placeMark,
         checkAvail,
         isFull,
