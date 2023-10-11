@@ -142,7 +142,7 @@ function playAgain(){
         for(let sq of Gameboard.boardSquares){
             sq.classList.remove('sq-disabled');
         }
-
+        
         // clear gameboard dom
         ModifyDom.clearDisplay();
 

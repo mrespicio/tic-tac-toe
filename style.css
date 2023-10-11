@@ -8,6 +8,7 @@
     --dark-white: #8D99AE;
     --dark-black: #2b2d42;
     --mid-yellow: #FFE792;
+    font-family: 'Roboto Slab', serif;
 }
 h1, h2{
     text-align: center;
@@ -17,6 +18,7 @@ h1, h2{
 
 body{
     background-color: #F6EDC3;
+
 }
 
 main{
@@ -94,4 +96,17 @@ main{
 
 #play-again:hover{
     background-color: var(--mid-white);
+}
+
+
+.cred{
+    position: fixed;
+    bottom: 5px;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.cred a:link,
+.cred a:visited{
+    text-decoration: none;
+    color: var(--dark-black);
 }
