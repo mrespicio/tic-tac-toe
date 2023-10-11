@@ -41,6 +41,8 @@ const Gameboard = (() => {
         }
     });
 
+    const boardSquares = document.getElementsByClassName('sq-item');
+
     return{ 
         board,
         boardMax,
@@ -48,7 +50,8 @@ const Gameboard = (() => {
         checkAvail,
         isFull,
         checkWin,
-        clearBoard
+        clearBoard,
+        boardSquares
     };
 })(); 
 
@@ -136,6 +139,10 @@ function playAgain(){
         // console.log('the cleared board for p1 is ' + playerHolder.playerOne.spots);
         // console.log('the cleared board for p2 is ' + playerHolder.playerTwo.spots);
 
+        for(let sq of Gameboard.boardSquares){
+            sq.classList.remove('sq-disabled');
+        }
+
         // clear gameboard dom
         ModifyDom.clearDisplay();
 
@@ -147,6 +154,11 @@ function playAgain(){
 function endGame(winner){
     if(winner == null) winner = playerHolder.none;
     ModifyDom.gameOver(winner);
+    // disable gamne board from being modified 
+
+    for(let sq of Gameboard.boardSquares){
+        sq.classList.add('sq-disabled');
+    }
     playAgain();
 }
 
