@@ -125,8 +125,7 @@ function gameController(player, pos){
     else if(Gameboard.isFull(Gameboard.board)) endGame();
 }
 
-function playAgain(player, loser){
-    // clear 
+function playAgain(){
     let playAgain = document.getElementById('play-again');
     playAgain.addEventListener('click', () =>{ 
         Gameboard.clearBoard(); 
@@ -145,43 +144,16 @@ function playAgain(player, loser){
     },{once:true});
 }
 
-function endGame(player){
-    if(player == null) player = playerHolder.none;
-    // reference player objects
-    const playerOne = playerHolder.playerOne;
-    const playerTwo = playerHolder.playerTwo;
-    const none = playerHolder.none;
-
-    console.log('player one is ' + playerOne.spots)
-    console.log('player two is ' + playerTwo.spots)
-
-    let loser;
-    switch(player){
-        case playerOne:
-            loser = playerTwo;
-            break;
-        case playerTwo:
-            loser = playerOne;
-            break;
-        case none:
-            loser = none;
-    }
-    ModifyDom.gameOver(player, loser);
-
-    // remove event from squares
-    const squares = document.getElementsByClassName('sq-item');
-    for(let i = 0; i < squares.length; i++){
-        //squares[i].removeEventListener('click', getCurrent());
-        //console.log(squares[i])
-    }
-    playAgain(player, loser);
+function endGame(winner){
+    if(winner == null) winner = playerHolder.none;
+    ModifyDom.gameOver(winner);
+    playAgain();
 }
 
 function switchPlayers(currentPlayer, position){
     const playerOne = playerHolder.playerOne;
     const playerTwo = playerHolder.playerTwo;
     let playerUpdate;
-    // console.log('the current player is ' + currentPlayer)
 
     switch(currentPlayer){
         case playerOne:
