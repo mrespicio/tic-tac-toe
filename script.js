@@ -7,7 +7,7 @@ const Gameboard = (() => {
     ];
 
     // returns new board with mark placed
-    const placeMark = ((position, sign) =>{
+    const placeMark = ((player, position, sign) =>{
         board.splice(position, 1, sign);
     })
 
@@ -32,8 +32,8 @@ const Gameboard = (() => {
     const checkWin = ((playerSpots) =>{
         return winConditions.some(winArr =>{ // iterate through all win conditions
             return winArr.every(n => (playerSpots.find(x => x == n) !== undefined));
-        }) 
-    }) 
+        }) //winConditions
+    }) //checkWin
 
     const clearBoard = (() =>{
         for(let i = 0; i < boardMax; i++){
